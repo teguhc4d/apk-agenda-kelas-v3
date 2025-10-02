@@ -440,18 +440,27 @@ function updateChart() {
 function updateDashboard() {
   const countAgendaEl = document.getElementById('countAgenda');
   if (countAgendaEl) countAgendaEl.textContent = getAgenda().length;
+
   const arr = getAbsensi();
   const today = (new Date()).toISOString().slice(0,10);
   const todayAbs = arr.filter(a => a.hari === today);
+
   const hadir = todayAbs.filter(a => a.status==='Hadir').length;
-  const izin = todayAbs.filter(a => a.status==='Izin').length;
+  const izin  = todayAbs.filter(a => a.status==='Izin').length;
   const alpha = todayAbs.filter(a => a.status==='Alpha').length;
+  const sakit = todayAbs.filter(a => a.status==='Sakit').length; // 🔥 tambahan
+
   const countAbsensiEl = document.getElementById('countAbsensi');
-  if (countAbsensiEl) countAbsensiEl.textContent = `Hadir:${hadir} | Izin:${izin} | Alpha:${alpha}`;
+  if (countAbsensiEl) {
+    countAbsensiEl.textContent = `Hadir:${hadir} | Izin:${izin} | Alpha:${alpha} | Sakit:${sakit}`;
+  }
+
   const lastCatEl = document.getElementById('lastCatatan');
   if (lastCatEl) lastCatEl.textContent = localStorage.getItem(key('catatan')) || '-';
+
   updateChart();
 }
+
 
 /* ---------- BACKUP / RESTORE ---------- */
 function exportAllJSON() {
@@ -606,3 +615,4 @@ window.addEventListener('DOMContentLoaded', () => {
 document.getElementById("hamburgerBtn").addEventListener("click", function() {
   document.getElementById("navTabs").classList.toggle("show");
 });
+
