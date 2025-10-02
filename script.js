@@ -439,22 +439,30 @@ function initChart() {
   const ctx = canvas.getContext('2d');
   absensiChart = new Chart(ctx, {
     type: 'pie',
-    data: { labels: ['Hadir','Izin','Alpha'], datasets: [{ data:[0,0,0], backgroundColor:['#28a745','#ffc107','#dc3545'] }] },
+    data: { 
+      labels: ['Hadir','Izin','Alpha','Sakit'], // 🔥 tambah label Sakit
+      datasets: [{
+        data:[0,0,0,0], // 🔥 tambah slot data untuk Sakit
+        backgroundColor:['#28a745','#ffc107','#dc3545','#6f42c1'] // 🔥 ungu untuk sakit
+      }] 
+    },
     options: { responsive:true }
   });
   updateChart();
 }
+
 function updateChart() {
   if (!absensiChart) return;
   const arr = getAbsensi();
-  const today = (new Date()).toISOString().slice(0,10);
-  const todayAbs = arr.filter(a => a.hari === today);
-  const hadir = todayAbs.filter(a => a.status==='Hadir').length;
-  const izin = todayAbs.filter(a => a.status==='Izin').length;
-  const alpha = todayAbs.filter(a => a.status==='Alpha').length;
-  absensiChart.data.datasets[0].data = [hadir, izin, alpha];
+  const hadir = arr.filter(a => a.status==='Hadir').length;
+  const izin  = arr.filter(a => a.status==='Izin').length;
+  const alpha = arr.filter(a => a.status==='Alpha').length;
+  const sakit = arr.filter(a => a.status==='Sakit').length; // 🔥 tambahan
+
+  absensiChart.data.datasets[0].data = [hadir, izin, alpha, sakit];
   absensiChart.update();
 }
+
 
 /* ---------- DASHBOARD UPDATE ---------- */
 function updateDashboard() {
@@ -635,5 +643,6 @@ window.addEventListener('DOMContentLoaded', () => {
 document.getElementById("hamburgerBtn").addEventListener("click", function() {
   document.getElementById("navTabs").classList.toggle("show");
 });
+
 
 
