@@ -1,6 +1,6 @@
 /* ===================================================
    style.css - Aplikasi Agenda Kelas (LocalStorage)
-   Final Versi Responsif Grid 4 Kolom Tabs
+   Final Versi Responsif Grid 4/2 Kolom Tabs
    =================================================== */
 
 /* Reset basic */
@@ -194,5 +194,18 @@ body.dark input, body.dark select, body.dark textarea { background:#071226; colo
   }
   button {
     width: 100%;
+  }
+}
+
+/* ===================================================
+   Extra responsif untuk layar sangat kecil (≤480px)
+   =================================================== */
+@media (max-width: 480px) {
+  .tabs {
+    grid-template-columns: repeat(2, 1fr); /* 🔹 jadi 2 kolom */
+  }
+  .tab-button {
+    font-size: 14px;
+    padding: 14px 6px;
   }
 }
