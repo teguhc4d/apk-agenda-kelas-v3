@@ -1,6 +1,6 @@
 /* ===================================================
    style.css - Aplikasi Agenda Kelas (LocalStorage)
-   Final Versi Responsif Grid 4/2 Kolom Tabs
+   Final Versi Responsif Scroll Horizontal Tabs
    =================================================== */
 
 /* Reset basic */
@@ -144,17 +144,23 @@ body.dark input, body.dark select, body.dark textarea { background:#071226; colo
     display: block;
   }
 
-  /* 🔹 Tabs jadi grid 4 kolom */
+  /* 🔹 Tabs jadi scroll horizontal */
   .tabs {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
     gap: 8px;
     margin: 10px 0;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tabs::-webkit-scrollbar {
+    display: none;
   }
   .tab-button {
-    width: 100%;
-    padding: 12px 6px;
-    font-size: 13px;
+    flex: 0 0 auto;
+    min-width: 120px;
+    font-size: 14px;
+    padding: 12px 8px;
     text-align: center;
   }
 
@@ -194,18 +200,5 @@ body.dark input, body.dark select, body.dark textarea { background:#071226; colo
   }
   button {
     width: 100%;
-  }
-}
-
-/* ===================================================
-   Extra responsif untuk layar sangat kecil (≤480px)
-   =================================================== */
-@media (max-width: 480px) {
-  .tabs {
-    grid-template-columns: repeat(2, 1fr); /* 🔹 jadi 2 kolom */
-  }
-  .tab-button {
-    font-size: 14px;
-    padding: 14px 6px;
   }
 }
