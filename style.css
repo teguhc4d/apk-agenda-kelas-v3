@@ -235,3 +235,48 @@ body.dark input, body.dark select, body.dark textarea { background:#071226; colo
 }
 
 
+
+
+/* ---------- ABSENSI STATUS ---------- */
+.status-hadir {
+  background: #d4edda;
+  color: #155724;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-izin {
+  background: #fff3cd;
+  color: #856404;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-alpha {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-sakit {
+  background: #e2d6f9;   /* ungu muda */
+  color: #4a148c;        /* ungu tua */
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+
+
