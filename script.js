@@ -598,4 +598,11 @@ window.addEventListener('DOMContentLoaded', () => {
   muatSemuaData();
   cekLoginGuru();
   updateLoginUI(); // 🔹 pastikan UI sesuai status
+
+});
+
+
+// Toggle hamburger nav
+document.getElementById("hamburgerBtn").addEventListener("click", function() {
+  document.getElementById("navTabs").classList.toggle("show");
 });
