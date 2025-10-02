@@ -1,149 +1,202 @@
-/* ==========================
-   style.css - Agenda Kelas
-   ========================== */
+/* ===================================================
+   style.css - Aplikasi Agenda Kelas (LocalStorage)
+   Final Versi Responsif + Scroll Tabs HP
+   =================================================== */
 
-/* Reset dasar */
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: #f5f5f5;
-  color: #333;
-}
+/* Reset basic */
+* { box-sizing: border-box; margin:0; padding:0; font-family: "Segoe UI", Arial, sans-serif; }
 
-h1, h2, h3 {
-  margin: 10px 0;
-}
+/* Page container */
+body { background: #f4f6f8; color:#222; min-height:100vh; display:flex; justify-content:center; padding:20px; }
+.container { width:100%; max-width:1200px; }
 
-.container {
-  max-width: 900px;
-  margin: auto;
-  padding: 15px;
-  background: #fff;
-  min-height: 100vh;
-}
+/* Header */
+.app-header { position: relative; display:flex; justify-content:center; align-items:center; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
+.title-wrap { display:flex; align-items:center; gap:10px; }
+.title-wrap h1 { font-size:34px; text-align:center; }
+.header-right { position:absolute; right:0; display:flex; gap:10px; align-items:center; }
 
-/* Dark mode */
-body.dark {
-  background: #222;
-  color: #eee;
+/* buttons, tabs */
+.tabs { 
+  display:flex; 
+  gap:12px; 
+  justify-content:center; 
+  flex-wrap:wrap; 
+  margin-bottom:18px; 
 }
-body.dark .container {
-  background: #333;
-  color: #eee;
-}
-body.dark input,
-body.dark select,
-body.dark textarea {
-  background: #555;
-  color: #fff;
-  border: 1px solid #888;
-}
-body.dark button {
-  background: #444;
-  color: #fff;
-}
-
-/* Tombol Dark Mode */
-#darkModeToggle {
-  display: block;
-  margin: 0 auto 15px auto;
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: none;
-  background: gold;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-/* Nav Tabs */
-nav.tabs {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 15px;
-}
-
-nav.tabs .tab-button {
-  flex: 1 0 auto;
-  padding: 10px 15px;
-  border-radius: 10px;
-  font-weight: 500;
-  cursor: pointer;
+.tab-button { 
+  background:#0d6efd; 
+  color:#fff; 
+  border:none; 
+  padding:10px 18px; 
+  border-radius:8px; 
+  cursor:pointer; 
   text-align: center;
-  white-space: nowrap;
-  border: none;
-  background: #007bff;
-  color: #fff;
+}
+.tab-button.active { background:#198754; box-shadow: 0 4px 8px rgba(0,0,0,0.12); }
+.tab-button:hover { opacity:0.95; }
+
+/* Header controls */
+#darkModeToggle { background:#ffc107; border:none; padding:10px 14px; border-radius:8px; cursor:pointer; }
+#kelasSelect { padding:8px 10px; border-radius:6px; }
+
+/* Tab content */
+.tab-content { display:none; background: #fff; padding:18px; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,0.06); margin-bottom:12px; }
+.tab-content.active { display:block; }
+
+/* rows & forms */
+.form-row { display:flex; gap:10px; margin:10px 0 14px 0; align-items:center; flex-wrap:wrap; }
+.search-row { display:flex; gap:10px; margin-bottom:10px; align-items:center; }
+
+/* inputs & selects */
+input, select, textarea { padding:10px; border-radius:6px; border:1px solid #ddd; }
+textarea { min-height:100px; width:100%; }
+
+/* lists & tables */
+.list { list-style:none; margin-top:10px; }
+.list li { padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; gap:10px; align-items:center; }
+.table { width:100%; border-collapse:collapse; margin-top:10px; }
+.table th, .table td { border:1px solid #eee; padding:8px; text-align:center; }
+
+/* dashboard cards */
+.dashboard-row { display:flex; gap:12px; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; }
+.card { background:#fafbfd; padding:16px; border-radius:8px; width:32%; text-align:center; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+.card p { font-size:22px; font-weight:600; }
+
+/* chart */
+.chart-row { background:#fff; padding:12px; border-radius:8px; margin-top:12px; }
+
+/* calendar */
+#calendar { margin-top:10px; }
+
+/* small helpers */
+.box { padding:10px; background:#f8f9fa; border-radius:6px; }
+.muted { color:#666; font-size:13px; margin-top:8px; }
+
+/* footer */
+footer { text-align:center; padding:12px; color:#fff; background:#0d6efd; border-radius:8px; margin-top:8px; }
+
+/* dark mode */
+body.dark { background:#0f1720; color:#e6eef8; }
+body.dark .tab-content { background:#0b1220; box-shadow:none; border:1px solid rgba(255,255,255,0.03); }
+body.dark .card { background:#081426; color:#cfe6ff; }
+body.dark footer { background:#08304b; }
+body.dark input, body.dark select, body.dark textarea { background:#071226; color:#dfeeff; border:1px solid rgba(255,255,255,0.03); }
+
+/* Profil Guru di header */
+#guruProfile {
+  font-weight: 600;
+  color: #0d6efd;
+}
+#guruProfile small {
+  color: #555;
+  font-weight: normal;
 }
 
-nav.tabs .tab-button.active {
-  background: #2a9d8f;
-}
-
-/* Konten Tab */
-.tab-content {
-  display: none;
-}
-.tab-content.active {
-  display: block;
-}
-
-/* Form */
-input, select, textarea {
-  display: block;
+/* Jadwal table wrapper agar bisa scroll di HP */
+.jadwal-wrapper {
   width: 100%;
-  padding: 8px;
-  margin: 5px 0;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* smooth scroll di HP */
 }
-button {
-  padding: 8px 12px;
-  margin: 5px 0;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  background: #007bff;
-  color: white;
-  font-weight: 500;
-}
-button:hover {
-  opacity: 0.9;
-}
-
-/* Table */
-table {
-  width: 100%;
+.jadwal-wrapper table {
+  width: auto;          
+  min-width: 900px;     
   border-collapse: collapse;
-  margin: 10px 0;
 }
-th, td {
-  border: 1px solid #ddd;
+.jadwal-wrapper th,
+.jadwal-wrapper td {
   padding: 6px;
-  text-align: left;
-}
-th {
-  background: #f0f0f0;
-}
-body.dark th {
-  background: #444;
+  border: 1px solid #ccc;
+  text-align: center;
+  white-space: nowrap;  
 }
 
-/* Responsive Nav Scroll (HP) */
+/* ===================================================
+   Responsif untuk layar kecil (≤768px)
+   =================================================== */
 @media (max-width: 768px) {
-  nav.tabs {
-    flex-wrap: nowrap;           /* jangan pecah baris */
-    overflow-x: auto;            /* bisa scroll horizontal */
-    justify-content: flex-start;
+  /* Header responsif */
+  .app-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 0;
+  }
+  .title-wrap {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .header-right {
+    position: static;      
+    justify-content: center;
+    width: 100%;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  #darkModeToggle {
+    width: 100%;
+    max-width: 300px;
+    padding: 8px 12px;
+    font-size: 14px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  /* 🔹 Tabs jadi scroll horizontal, bukan grid */
+  .tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 6px;
+    margin: 10px 0;
     -webkit-overflow-scrolling: touch;
   }
-  nav.tabs::-webkit-scrollbar {
-    display: none;               /* sembunyikan scrollbar */
+  .tabs::-webkit-scrollbar {
+    display: none;
   }
-  nav.tabs .tab-button {
+  .tab-button {
     flex: 0 0 auto;
-    min-width: 120px;            /* enak buat tap */
+    min-width: 110px;
+    font-size: 13px;
+  }
+
+  /* Dashboard cards */
+  .dashboard-row {
+    flex-direction: column;
+  }
+  .card {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  /* Chart dan kalender */
+  .chart-row {
+    padding: 10px;
+  }
+  #calendar {
+    width: 100% !important;
+  }
+
+  /* Tabel jadwal supaya bisa di scroll */
+  .jadwal-wrapper {
+    overflow-x: auto;
+  }
+  .jadwal-wrapper table {
+    min-width: 900px;
+  }
+
+  /* Form */
+  .form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  input, select, textarea {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  button {
+    width: 100%;
   }
 }
