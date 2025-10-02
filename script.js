@@ -265,8 +265,12 @@ function exportAgendaPDF() {
 }
 
 /* ---------- ABSENSI ---------- */
-function getAbsensi() { return JSON.parse(localStorage.getItem(key('absensi')) || '[]'); }
-function simpanAbsensi(arr) { localStorage.setItem(key('absensi'), JSON.stringify(arr)); }
+function getAbsensi() { 
+  return JSON.parse(localStorage.getItem(key('absensi')) || '[]'); 
+}
+function simpanAbsensi(arr) { 
+  localStorage.setItem(key('absensi'), JSON.stringify(arr)); 
+}
 function tandaiAbsen() {
   const nama = document.getElementById('siswaSelect')?.value;
   const status = document.getElementById('statusSelect')?.value;
@@ -275,8 +279,10 @@ function tandaiAbsen() {
   const hari = (new Date()).toISOString().slice(0,10);
   arr.push({ nama, status, hari });
   simpanAbsensi(arr);
-  renderAbsensiTable(); updateDashboard();
+  renderAbsensiTable(); 
+  updateDashboard();
 }
+
 function renderAbsensiTable() {
   const tbody = document.getElementById('absenList');
   if (!tbody) return;
@@ -284,21 +290,35 @@ function renderAbsensiTable() {
   const search = (document.getElementById('searchAbsen')?.value || '').toLowerCase();
   const filter = (document.getElementById('filterAbsen')?.value || '');
   tbody.innerHTML = '';
+
   arr.filter(a => (!search || a.nama.toLowerCase().includes(search)) && (!filter || a.status === filter))
     .forEach((a, idx) => {
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${a.nama}</td><td>${a.status}</td>
-        <td><button onclick="hapusAbsensi(${idx})">Hapus</button></td>`;
+      // 🔹 Gunakan badge CSS sesuai status
+      tr.innerHTML = `
+        <td>${a.nama}</td>
+        <td><span class="status-${a.status.toLowerCase()}">${a.status}</span></td>
+        <td><button onclick="hapusAbsensi(${idx})">Hapus</button></td>
+      `;
       tbody.appendChild(tr);
     });
 }
-function hapusAbsensi(i) { const arr = getAbsensi(); arr.splice(i,1); simpanAbsensi(arr); renderAbsensiTable(); updateDashboard(); }
+
+function hapusAbsensi(i) { 
+  const arr = getAbsensi(); 
+  arr.splice(i,1); 
+  simpanAbsensi(arr); 
+  renderAbsensiTable(); 
+  updateDashboard(); 
+}
+
 function exportAbsensiCSV() {
   const arr = getAbsensi();
   let csv = 'nama,status,tanggal\n';
   arr.forEach(a => csv += `${a.nama},${a.status},${a.hari}\n`);
   downloadTextFile('absensi.csv', csv);
 }
+
 
 /* ---------- CATATAN ---------- */
 function simpanCatatan() {
@@ -615,4 +635,5 @@ window.addEventListener('DOMContentLoaded', () => {
 document.getElementById("hamburgerBtn").addEventListener("click", function() {
   document.getElementById("navTabs").classList.toggle("show");
 });
+
 
