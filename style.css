@@ -1,6 +1,6 @@
 /* ===================================================
    style.css - Aplikasi Agenda Kelas (LocalStorage)
-   Final Versi Responsif Scroll Horizontal Tabs (pakai !important)
+   Final Versi Responsif Grid 3 Kolom Tabs
    =================================================== */
 
 /* Reset basic */
@@ -113,7 +113,7 @@ body.dark input, body.dark select, body.dark textarea { background:#071226; colo
 }
 
 /* ===================================================
-   Responsif untuk layar kecil (≤768px)
+   Responsif untuk layar kecil (≤768px) -> Grid 3 kolom
    =================================================== */
 @media (max-width: 768px) {
   /* Header responsif */
@@ -144,25 +144,18 @@ body.dark input, body.dark select, body.dark textarea { background:#071226; colo
     display: block;
   }
 
-  /* 🔹 Tabs jadi scroll horizontal pakai !important */
+  /* 🔹 Tabs jadi GRID 3 kolom */
   .tabs {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
-    justify-content: flex-start !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
     margin: 10px 0;
-    -webkit-overflow-scrolling: touch;
-  }
-  .tabs::-webkit-scrollbar {
-    display: none;
   }
   .tab-button {
-    flex: 0 0 auto !important;
-    min-width: 120px !important;
-    font-size: 14px !important;
-    padding: 12px 8px !important;
-    text-align: center !important;
+    width: 100% !important;
+    font-size: 13px !important;
+    padding: 12px 6px !important;
+    text-align: center;
   }
 
   /* Dashboard cards */
