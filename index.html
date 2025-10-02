@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aplikasi Agenda Kelas</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- FullCalendar -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- XLSX (untuk import Excel siswa) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- header -->
+    <header class="app-header">
+      <div class="title-wrap">
+        <img id="schoolLogo" src="5.jpg" alt="Logo Sekolah" style="width:40px; height:40px; border-radius:50%;">
+        <h1>Agenda Kelas</h1>
+      </div>
+      <div class="header-right">
+        <span id="guruProfile" style="margin-right:10px;"></span>
+        <!-- <select id="kelasSelect" onchange="gantiKelas(this.value)" title="Pilih kelas">
+          <option value="XI-RPL">XI-RPL</option>
+          <option value="X-DKV">X-DKV</option>
+          <option value="XII-TKJ">XII-TKJ</option>
+        </select> -->
+        <button id="darkModeToggle">🌙 Dark Mode</button>
+      </div>
+    </header>
+
+    <!-- nav tabs -->
+    <nav class="tabs">
+      <button class="tab-button active" onclick="openTab('dashboardTab', this)">Dashboard</button>
+      <button class="tab-button" onclick="openTab('agendaTab', this)">Agenda</button>
+      <button class="tab-button" onclick="openTab('absenTab', this)">Absensi</button>
+      <button class="tab-button" onclick="openTab('siswaTab', this)">Data Siswa</button>
+      <button class="tab-button" onclick="openTab('catatanTab', this)">Catatan Guru</button>
+      <button class="tab-button" onclick="openTab('jadwalTab', this)">Jadwal</button>
+      <button class="tab-button" onclick="openTab('modulTab', this)">Modul</button>
+      <button class="tab-button" onclick="openTab('kalenderTab', this)">Kalender</button>
+      <button class="tab-button" onclick="openTab('backupTab', this)">Backup / Restore</button>
+      <button class="tab-button" onclick="openTab('loginTab', this)">Login</button>
+    </nav>
+
+    <!-- ============ DASHBOARD ============ -->
+    <section id="dashboardTab" class="tab-content active">
+      <h2>📊 Dashboard Ringkasan</h2>
+      <div class="dashboard-row">
+        <div class="card"><h3>Total Agenda (semua)</h3><p id="countAgenda">0</p></div>
+        <div class="card"><h3>Absensi Hari Ini</h3><p id="countAbsensi">Hadir:0 | Izin:0 | Alpha:0</p></div>
+        <div class="card"><h3>Catatan Terakhir</h3><p id="lastCatatan">-</p></div>
+      </div>
+      <div class="chart-row"><canvas id="absensiChart" width="400" height="150"></canvas></div>
+    </section>
+
+    <!-- ============ AGENDA ============ -->
+    <section id="agendaTab" class="tab-content">
+      <h2>📝 Agenda</h2>
+      <div class="form-row">
+        <input id="agendaInput" placeholder="Masukkan agenda...">
+        <input id="agendaDate" type="date">
+        <select id="agendaJam">
+          <option value="">Pilih Jam</option>
+          <option value="1">Jam 1</option><option value="2">Jam 2</option><option value="3">Jam 3</option>
+          <option value="4">Jam 4</option><option value="5">Jam 5</option><option value="6">Jam 6</option>
+          <option value="7">Jam 7</option><option value="8">Jam 8</option><option value="9">Jam 9</option>
+          <option value="10">Jam 10</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <input id="agendaFile" type="file" title="Lampiran (opsional)">
+        <button onclick="tambahAgenda()">Tambah Agenda</button>
+        <button onclick="exportAgendaCSV()">Export Agenda CSV</button>
+        <button onclick="exportAgendaPDF()">Export Agenda PDF</button>
+      </div>
+      <div class="search-row">
+        <input id="searchAgenda" placeholder="Cari agenda..." oninput="renderAgendaList()">
+        <select id="filterAgendaJam" onchange="renderAgendaList()">
+          <option value="">Semua Jam</option>
+          <option value="1">Jam 1</option><option value="2">Jam 2</option><option value="3">Jam 3</option>
+          <option value="4">Jam 4</option><option value="5">Jam 5</option>
+        </select>
+      </div>
+      <ul id="agendaList" class="list"></ul>
+    </section>
+
+    <!-- ============ ABSENSI ============ -->
+    <section id="absenTab" class="tab-content">
+      <h2>✅ Absensi</h2>
+      <div class="form-row">
+        <select id="siswaSelect"><option value="">-- Pilih Siswa --</option></select>
+        <select id="statusSelect">
+          <option value="">-- Pilih Status --</option>
+          <option value="Hadir">Hadir</option><option value="Izin">Izin</option><option value="Alpha">Alpha</option>
+        </select>
+        <button onclick="tandaiAbsen()">Simpan Absen</button>
+        <button onclick="exportAbsensiCSV()">Export Absensi CSV</button>
+      </div>
+      <div class="search-row">
+        <input id="searchAbsen" placeholder="Cari absensi..." oninput="renderAbsensiTable()">
+        <select id="filterAbsen" onchange="renderAbsensiTable()">
+          <option value="">Semua</option><option value="Hadir">Hadir</option><option value="Izin">Izin</option><option value="Alpha">Alpha</option>
+        </select>
+      </div>
+      <table class="table"><thead><tr><th>Nama</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="absenList"></tbody></table>
+    </section>
+
+    <!-- ============ DATA SISWA ============ -->
+    <section id="siswaTab" class="tab-content">
+      <h2>👥 Data Siswa</h2>
+      <div class="form-row">
+        <input id="siswaNama" placeholder="Nama siswa...">
+        <input id="siswaNIS" placeholder="NIS / ID...">
+        <select id="siswaKelas">
+          <option value="">Pilih Kelas</option>
+          <option>XI-RPL</option><option>X-DKV</option><option>XII-TKJ</option>
+        </select>
+        <button onclick="tambahSiswa()">Tambah Siswa</button>
+      </div>
+      <div class="form-row">
+        <input type="file" id="importSiswaFile" accept=".xlsx,.xls,.csv">
+        <button onclick="importSiswaExcel()">Import Siswa (Excel)</button>
+        <button onclick="downloadTemplateSiswa()">Download Template Excel</button>
+      </div>
+
+      <div class="form-row">
+        <input type="file" id="importSiswaFile" accept=".xlsx,.xls,.csv">
+        <button onclick="importSiswaExcel()">Import Siswa (Csv)</button>
+        <button onclick="downloadTemplateSiswa()">Download Template Csv</button>
+      </div>
+
+
+      <div class="search-row"><input id="searchSiswa" placeholder="Cari siswa..." oninput="renderSiswaTable()"></div>
+      <table class="table"><thead><tr><th>NIS</th><th>Nama</th><th>Kelas</th><th>Aksi</th></tr></thead><tbody id="siswaTable"></tbody></table>
+    </section>
+
+    <!-- ============ CATATAN GURU ============ -->
+    <section id="catatanTab" class="tab-content">
+      <h2>🖊 Catatan Guru</h2>
+      <textarea id="catatanInput" placeholder="Tulis catatan..."></textarea>
+      <div class="form-row">
+        <button onclick="simpanCatatan()">Simpan</button>
+        <button onclick="exportCatatanPDF()">Export PDF</button>
+      </div>
+      <p><strong>Catatan Tersimpan:</strong></p>
+      <div id="catatanDisplay" class="box"></div>
+    </section>
+
+    <!-- ============ JADWAL ============ -->
+    <section id="jadwalTab" class="tab-content">
+      <h2>📅 Jadwal</h2>
+      <div class="jadwal-wrapper">
+        <table id="jadwalTable" class="table">
+          <thead>
+            <tr>
+              <th>Hari</th>
+              <th>Jam 1</th><th>Jam 2</th><th>Jam 3</th><th>Jam 4</th>
+              <th>Jam 5</th><th>Jam 6</th><th>Jam 7</th><th>Jam 8</th>
+              <th>Jam 9</th><th>Jam 10</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Senin</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+            <tr><td>Selasa</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+            <tr><td>Rabu</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+            <tr><td>Kamis</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+            <tr><td>Jumat</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="form-row">
+        <button onclick="simpanJadwal()">Simpan Jadwal</button>
+        <button onclick="exportJadwalPDF()">Export Jadwal PDF</button>
+      </div>
+    </section>
+
+    <!-- ============ MODUL ============ -->
+    <section id="modulTab" class="tab-content">
+      <h2>📂 Modul & Lampiran</h2>
+      <div class="form-row">
+        <input id="modulInput" type="file">
+        <button onclick="uploadModul()">Upload Modul</button>
+        <button onclick="exportAllJSON()">Backup Semua (JSON)</button>
+      </div>
+      <ul id="modulList" class="list"></ul>
+    </section>
+
+    <!-- ============ KALENDER ============ -->
+    <section id="kalenderTab" class="tab-content">
+      <h2>🗓 Kalender</h2>
+      <div id="calendar"></div>
+      <p class="muted">Klik tanggal untuk melihat / tambah agenda</p>
+    </section>
+
+    <!-- ============ BACKUP / RESTORE ============ -->
+    <section id="backupTab" class="tab-content">
+      <h2>🔄 Backup & Restore</h2>
+      <div class="form-row">
+        <button onclick="exportAllJSON()">Export Semua (File JSON)</button>
+        <input id="importFile" type="file" accept=".json">
+        <button onclick="importAllJSON()">Import JSON (Restore)</button>
+      </div>
+    </section>
+
+    <!-- ============ LOGIN ============ -->
+    <section id="loginTab" class="tab-content">
+      <h2>🔐 Login / Register</h2>
+      <div class="form-row">
+        <input id="guruUsername" placeholder="Username">
+        <input id="guruPassword" placeholder="Password" type="password">
+        <select id="guruMapel"><option value="">Pilih Mapel</option><option>Matematika</option><option>Pemrograman Web</option></select>
+        <button onclick="registerGuru()">Register (Guru)</button>
+        <button onclick="loginGuru()">Login (Guru)</button>
+      </div>
+      <div class="form-row">
+        <input id="siswaLoginNama" placeholder="Nama Siswa">
+        <button onclick="loginSiswa()">Login Siswa (View)</button>
+      </div>
+      <p id="guruStatus">Belum login.</p>
+    </section>
+
+    <footer>© 2025 RPL Sekoci</footer>
+  </div>
+
+  <!-- FullCalendar -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <!-- Our script -->
+  <script src="script.js"></script>
+</body>
+</html>
