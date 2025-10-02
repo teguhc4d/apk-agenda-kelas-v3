@@ -97,26 +97,39 @@
       <ul id="agendaList" class="list"></ul>
     </section>
 
-    <!-- ============ ABSENSI ============ -->
-    <section id="absenTab" class="tab-content">
-      <h2>✅ Absensi</h2>
-      <div class="form-row">
-        <select id="siswaSelect"><option value="">-- Pilih Siswa --</option></select>
-        <select id="statusSelect">
-          <option value="">-- Pilih Status --</option>
-          <option value="Hadir">Hadir</option><option value="Izin">Izin</option><option value="Alpha">Alpha</option>
-        </select>
-        <button onclick="tandaiAbsen()">Simpan Absen</button>
-        <button onclick="exportAbsensiCSV()">Export Absensi CSV</button>
-      </div>
-      <div class="search-row">
-        <input id="searchAbsen" placeholder="Cari absensi..." oninput="renderAbsensiTable()">
-        <select id="filterAbsen" onchange="renderAbsensiTable()">
-          <option value="">Semua</option><option value="Hadir">Hadir</option><option value="Izin">Izin</option><option value="Alpha">Alpha</option>
-        </select>
-      </div>
-      <table class="table"><thead><tr><th>Nama</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="absenList"></tbody></table>
-    </section>
+   <!-- ============ ABSENSI ============ -->
+<section id="absenTab" class="tab-content">
+  <h2>✅ Absensi</h2>
+  <div class="form-row">
+    <select id="siswaSelect">
+      <option value="">-- Pilih Siswa --</option>
+    </select>
+    <select id="statusSelect">
+      <option value="">-- Pilih Status --</option>
+      <option value="Hadir">Hadir</option>
+      <option value="Izin">Izin</option>
+      <option value="Alpha">Alpha</option>
+      <option value="Sakit">Sakit</option> <!-- 🔥 Tambahan -->
+    </select>
+    <button onclick="tandaiAbsen()">Simpan Absen</button>
+    <button onclick="exportAbsensiCSV()">Export Absensi CSV</button>
+  </div>
+  <div class="search-row">
+    <input id="searchAbsen" placeholder="Cari absensi..." oninput="renderAbsensiTable()">
+    <select id="filterAbsen" onchange="renderAbsensiTable()">
+      <option value="">Semua</option>
+      <option value="Hadir">Hadir</option>
+      <option value="Izin">Izin</option>
+      <option value="Alpha">Alpha</option>
+      <option value="Sakit">Sakit</option> <!-- 🔥 Tambahan -->
+    </select>
+  </div>
+  <table class="table">
+    <thead><tr><th>Nama</th><th>Status</th><th>Aksi</th></tr></thead>
+    <tbody id="absenList"></tbody>
+  </table>
+</section>
+
 
     <!-- ============ DATA SISWA ============ -->
     <section id="siswaTab" class="tab-content">
@@ -241,4 +254,5 @@
   <script src="script.js"></script>
 </body>
 </html>
+
 
