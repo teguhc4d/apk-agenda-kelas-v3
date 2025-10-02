@@ -1,6 +1,6 @@
 /* ===================================================
    style.css - Aplikasi Agenda Kelas (LocalStorage)
-   Final Versi Responsif + Scroll Tabs HP
+   Final Versi Responsif Grid 6 Kolom Tabs
    =================================================== */
 
 /* Reset basic */
@@ -97,7 +97,7 @@ body.dark input, body.dark select, body.dark textarea { background:#071226; colo
 .jadwal-wrapper {
   width: 100%;
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch; /* smooth scroll di HP */
+  -webkit-overflow-scrolling: touch;
 }
 .jadwal-wrapper table {
   width: auto;          
@@ -144,22 +144,18 @@ body.dark input, body.dark select, body.dark textarea { background:#071226; colo
     display: block;
   }
 
-  /* 🔹 Tabs jadi scroll horizontal, bukan grid */
+  /* 🔹 Tabs jadi grid 6 kolom */
   .tabs {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
     gap: 6px;
     margin: 10px 0;
-    -webkit-overflow-scrolling: touch;
-  }
-  .tabs::-webkit-scrollbar {
-    display: none;
   }
   .tab-button {
-    flex: 0 0 auto;
-    min-width: 110px;
-    font-size: 13px;
+    width: 100%;
+    padding: 10px 6px;
+    font-size: 12px;
+    text-align: center;
   }
 
   /* Dashboard cards */
