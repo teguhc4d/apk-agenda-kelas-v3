@@ -440,10 +440,10 @@ function initChart() {
   absensiChart = new Chart(ctx, {
     type: 'pie',
     data: { 
-      labels: ['Hadir','Izin','Alpha','Sakit'], // 🔥 tambah label Sakit
+      labels: ['Hadir','Izin','Alpha','Sakit'], 
       datasets: [{
-        data:[0,0,0,0], // 🔥 tambah slot data untuk Sakit
-        backgroundColor:['#28a745','#ffc107','#dc3545','#6f42c1'] // 🔥 ungu untuk sakit
+        data:[0,0,0,0],
+        backgroundColor:['#28a745','#ffc107','#dc3545','#6f42c1']
       }] 
     },
     options: { responsive:true }
@@ -457,11 +457,16 @@ function updateChart() {
   const hadir = arr.filter(a => a.status==='Hadir').length;
   const izin  = arr.filter(a => a.status==='Izin').length;
   const alpha = arr.filter(a => a.status==='Alpha').length;
-  const sakit = arr.filter(a => a.status==='Sakit').length; // 🔥 tambahan
+  const sakit = arr.filter(a => a.status==='Sakit').length;
 
   absensiChart.data.datasets[0].data = [hadir, izin, alpha, sakit];
   absensiChart.update();
 }
+
+/* ---------- Panggil saat load ---------- */
+document.addEventListener("DOMContentLoaded", () => {
+  initChart();
+});
 
 
 /* ---------- DASHBOARD UPDATE ---------- */
@@ -643,6 +648,7 @@ window.addEventListener('DOMContentLoaded', () => {
 document.getElementById("hamburgerBtn").addEventListener("click", function() {
   document.getElementById("navTabs").classList.toggle("show");
 });
+
 
 
 
