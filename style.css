@@ -196,3 +196,42 @@ body.dark input, body.dark select, body.dark textarea { background:#071226; colo
     width: 100%;
   }
 }
+
+/* ===============================
+   Hamburger Menu
+   =============================== */
+.hamburger {
+  display: none;
+  font-size: 24px;
+  background: #0d6efd;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+/* Mobile (≤768px) */
+@media (max-width: 768px) {
+  .tabs {
+    display: none;   /* default hidden */
+    flex-direction: column;
+    gap: 6px;
+    margin: 10px 0;
+  }
+  .tabs.show {
+    display: flex;   /* tampil kalau toggle aktif */
+  }
+  .hamburger {
+    display: block;  /* tampilkan tombol */
+  }
+  .tab-button {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+
