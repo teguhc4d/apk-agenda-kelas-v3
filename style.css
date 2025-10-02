@@ -1,6 +1,6 @@
 /* ===================================================
    style.css - Aplikasi Agenda Kelas (LocalStorage)
-   Final Versi Responsif Scroll Horizontal Tabs
+   Final Versi Responsif Scroll Horizontal Tabs (pakai !important)
    =================================================== */
 
 /* Reset basic */
@@ -144,11 +144,12 @@ body.dark input, body.dark select, body.dark textarea { background:#071226; colo
     display: block;
   }
 
-  /* 🔹 Tabs jadi scroll horizontal */
+  /* 🔹 Tabs jadi scroll horizontal pakai !important */
   .tabs {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    justify-content: flex-start !important;
     gap: 8px;
     margin: 10px 0;
     -webkit-overflow-scrolling: touch;
@@ -157,11 +158,11 @@ body.dark input, body.dark select, body.dark textarea { background:#071226; colo
     display: none;
   }
   .tab-button {
-    flex: 0 0 auto;
-    min-width: 120px;
-    font-size: 14px;
-    padding: 12px 8px;
-    text-align: center;
+    flex: 0 0 auto !important;
+    min-width: 120px !important;
+    font-size: 14px !important;
+    padding: 12px 8px !important;
+    text-align: center !important;
   }
 
   /* Dashboard cards */
